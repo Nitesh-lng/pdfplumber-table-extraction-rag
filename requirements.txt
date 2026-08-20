@@ -7,3 +7,4 @@ sentence-transformers
 faiss-cpu
 python-dotenv
 langchain-experimental
+rank-bm25
