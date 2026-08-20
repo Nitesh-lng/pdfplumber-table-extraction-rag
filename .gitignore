@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.pyc
+data/*.pdf
+faiss_index/
