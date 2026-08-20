@@ -6,7 +6,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 class TextSemanticChunker:
 
     def __init__(self):
-        self.embeddings = HuggingFaceEmbeddings(EMBEDDING_MODEL) 
+        self.embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
         self.threshold = BREAKPOINT_THRESHOLD_TYPE
         self.splitter = SemanticChunker(
             embeddings = self.embeddings,
@@ -14,4 +14,4 @@ class TextSemanticChunker:
         )
 
     def chunk(self,documents):
-        return self.splitter.create_documents(documents)
+        return self.splitter.split_documents(documents)

@@ -35,6 +35,49 @@ class DocumentBuilder:
             table_documents = self._create_table_documents(table)
 
             documents.extend(table_documents)
+            documents.extend(
+                self._create_table_comparison_documents(table)
+            )
+
+        return documents
+
+    def _create_table_comparison_documents(self, table):
+        """Keep adjacent table metrics together for comparison queries."""
+        documents = []
+        rows = table["rows"]
+
+        for start in range(0, len(rows), 3):
+            group = rows[start:start + 3]
+            lines = [
+                "Financial comparison table."
+            ]
+
+            for row in group:
+                metric = row["metric"]
+
+                # Queries commonly use the singular form, while the report
+                # labels this metric as "Revenues" or "Total revenues".
+                if metric.lower() in {"revenues", "total revenues"}:
+                    metric = "Revenue"
+
+                values = "; ".join(
+                    f"{period}: {value}"
+                    for period, value in row["values"].items()
+                )
+                lines.append(f"{metric}: {values}")
+
+            documents.append(
+                Document(
+                    page_content="\n".join(lines),
+                    metadata={
+                        "type": "table",
+                        "page": table["page"],
+                        "table_number": table["table_number"],
+                        "table_scope": "comparison_group",
+                        "row_start": start
+                    }
+                )
+            )
 
         return documents
 

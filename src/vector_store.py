@@ -18,7 +18,7 @@ class VectorStore:
         return FAISS.from_documents(
             chunks,
             self.embeddings,
-            distancestrategy = DistanceStrategy.COSINE
+            distance_strategy=DistanceStrategy.COSINE
         )
 
     def save(self,vector_store):
