@@ -8,3 +8,4 @@ faiss-cpu
 python-dotenv
 langchain-experimental
 rank-bm25
+langchain_groq

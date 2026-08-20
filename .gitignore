@@ -4,3 +4,4 @@ __pycache__/
 data/*.pdf
 faiss_index/dloader/
 dloader/
+faiss_index/
