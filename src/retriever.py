@@ -7,11 +7,12 @@ from src.config import TOP_K
 
 class HybridRetriever:
 
-    def __init__(self, vector_store, chunks, rrf_k=60):
+    def __init__(self, vector_store, chunks, rrf_k=60, debug=False):
 
         self.vector_store = vector_store
         self.chunks = chunks
         self.rrf_k = rrf_k
+        self.debug = debug
 
         self.bm25_retriever = BM25Retriever.from_documents(
             self.chunks)
@@ -22,9 +23,20 @@ class HybridRetriever:
             query,
             k=TOP_K)
         bm25_results = self.bm25_retriever.invoke(query)
-        return self._rrf_fusion(
+        if self.debug:
+            self._log_ranked_documents(
+                "VECTOR SEARCH RESULTS", vector_results
+            )
+            self._log_ranked_documents(
+                "BM25 RESULTS", bm25_results
+            )
+
+        results = self._rrf_fusion(
             vector_results,
             bm25_results)
+        if self.debug:
+            self._log_ranked_documents("RRF RESULTS", results)
+        return results
 
     def _rrf_fusion(self, vector_results, bm25_results):
         scores = defaultdict(float)
@@ -54,6 +66,15 @@ class HybridRetriever:
             document.metadata["rrf_score"] = score
             results.append(document)
         return results
+
+    def _log_ranked_documents(self, title, documents):
+        print(f"\n{title}")
+        for rank, document in enumerate(documents, start=1):
+            print(f"Rank: {rank}")
+            if "rrf_score" in document.metadata:
+                print(f"RRF score: {document.metadata['rrf_score']}")
+            print(f"Page content:\n{document.page_content}")
+            print(f"Metadata: {document.metadata}")
 
     def _get_document_id(self, document):
         return (
