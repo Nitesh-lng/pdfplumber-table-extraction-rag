@@ -2,4 +2,4 @@
 __pycache__/
 *.pyc
 data/*.pdf
-faiss_index/
+faiss_index/dloader/

@@ -12,3 +12,4 @@ LLM_MODEL = "openai/gpt-oss-120b"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 TOP_K = 3
+BREAKPOINT_THRESHOLD_TYPE = "standard_deviation"
