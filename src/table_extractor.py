@@ -149,10 +149,8 @@ class TableExtractor:
                     pending_labels.append(text)
 
                 continue
-            # Row contains metric + values
             metric = row[0]
 
-            # Add previous wrapped label parts
             if pending_labels:
 
                 metric = " ".join(
@@ -191,7 +189,6 @@ class TableExtractor:
             "periods": periods,
             "rows": structured_rows
         }
-    # 6. Extract + structure all tables from PDF
 
     def extract_tables(self):
 
@@ -228,7 +225,6 @@ class TableExtractor:
 
         return structured_tables
 
-    # 7. Display structured tables
     def display_tables(self):
 
         tables = self.extract_tables()

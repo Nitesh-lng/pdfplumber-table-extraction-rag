@@ -11,7 +11,7 @@ class DataLoader:
             raise FileNotFoundError('File not found!')
 
         if self.file_path.suffix.lower() != '.pdf':
-            raise ValueError('File extension have different')
+            raise ValueError('Different File extension')
 
         loader = PDFPlumberLoader(self.file_path)
         documents = loader.load()
